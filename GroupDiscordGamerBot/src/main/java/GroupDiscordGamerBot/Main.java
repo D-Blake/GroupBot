@@ -18,15 +18,14 @@ public class Main extends ListenerAdapter{
 	public static void main(String[] args) throws LoginException, IOException {
 		// TODO Auto-generated method stub
 		JDABuilder builder = new JDABuilder(AccountType.BOT);
-		FileReader read = new FileReader("BotToken.txt");
-		
-		File file = new File("a.txt");
+		//Replace with your file
+		File file = new File("resources/BotToken.txt");
 		FileInputStream fis = new FileInputStream(file);
 		byte[] data = new byte[(int) file.length()];
 		fis.read(data);
 		fis.close();
 		String token = data.toString();
-		builder.setToken(token);
+		builder.setToken("NjExMjY3MjY0NTA2NzU3MTQw.XVRVEg.GHZt901JVUth51-jMRPQZ_vpido");
 		builder.addEventListeners(new Main());
 		builder.build();
 	}
