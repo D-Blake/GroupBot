@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.security.auth.login.LoginException;
 
@@ -18,14 +21,9 @@ public class Main extends ListenerAdapter{
 	public static void main(String[] args) throws LoginException, IOException {
 		// TODO Auto-generated method stub
 		JDABuilder builder = new JDABuilder(AccountType.BOT);
-		FileReader read = new FileReader("BotToken.txt");
-		
-		File file = new File("a.txt");
-		FileInputStream fis = new FileInputStream(file);
-		byte[] data = new byte[(int) file.length()];
-		fis.read(data);
-		fis.close();
-		String token = data.toString();
+	    Path path = Paths.get("BotToken.txt");
+	 
+	    String token = Files.readAllLines(path).get(0);
 		builder.setToken(token);
 		builder.addEventListeners(new Main());
 		builder.build();
