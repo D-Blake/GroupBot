@@ -9,7 +9,16 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    id 'java'
+  	id 'application'
+  	id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
+
+mainClassName = 'com.example.jda.Bot'
+
+version = '1.0'
+
+sourceCompatibility = 1.8
 
 repositories {
     // Use jcenter for resolving your dependencies.
@@ -18,6 +27,9 @@ repositories {
 }
 
 dependencies {
+
+	compile 'com.sedmelluq:lavaplayer:1.3.20'
+
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
 
@@ -29,3 +41,4 @@ dependencies {
     
     compile 'net.dv8tion:JDA:4.0.0_40'
 }
+compileJava.options.encoding = 'UTF-8'
