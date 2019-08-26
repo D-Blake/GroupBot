@@ -14,6 +14,10 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.*;
+
+import music.AudioPlayerSendHandler;
+import music.PlayerManager;
+import music.TrackScheduler;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -72,8 +76,9 @@ public class Main extends ListenerAdapter{
 				audioManager.closeAudioConnection();
 				break;
 			case "!play":
-				AudioTrack track;
-//				trackScheduler.getPlayer().playTrack(track);
+				PlayerManager manager = PlayerManager.getInstance();
+				manager.loadAndPlay(event.getTextChannel(), event.getMessage().getContentRaw().substring(cmd.length()+1));
+				manager.getGuildMusicManager(event.getGuild()).player.setVolume(10);
 				break;
 		}
 	}
