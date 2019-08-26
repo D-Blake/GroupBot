@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.util.concurrent.TimeUnit;
 import javax.security.auth.login.LoginException;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.*;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -26,7 +29,6 @@ public class Main extends ListenerAdapter{
 		// TODO Auto-generated method stub
 		JDABuilder builder = new JDABuilder(AccountType.BOT);
 	    Path path = Paths.get("BotToken.txt");
-	 
 	    String token = Files.readAllLines(path).get(0);
 		builder.setToken(token);
 		builder.addEventListeners(new Main());
@@ -40,6 +42,8 @@ public class Main extends ListenerAdapter{
 		AudioManager audioManager = g.getAudioManager();
 		AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 		AudioPlayer player = playerManager.createPlayer();
+		TrackScheduler trackScheduler = new TrackScheduler(player);
+		player.addListener(trackScheduler);
 		System.out.println("We received a message from " +
 					event.getAuthor().getName() + ": " +
 					event.getMessage().getContentDisplay());
@@ -60,11 +64,16 @@ public class Main extends ListenerAdapter{
 				break;
 			case "!join":
 				audioManager.openAudioConnection(myChannel);
+				audioManager.setConnectTimeout(TimeUnit.MINUTES.toMillis(3));
 				audioManager.setSendingHandler(new AudioPlayerSendHandler(player));
 				audioManager.openAudioConnection(myChannel);
 				break;
 			case"!leave":
 				audioManager.closeAudioConnection();
+				break;
+			case "!play":
+				AudioTrack track;
+//				trackScheduler.getPlayer().playTrack(track);
 				break;
 		}
 	}
