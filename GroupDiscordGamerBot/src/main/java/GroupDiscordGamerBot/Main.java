@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.security.auth.login.LoginException;
 
@@ -20,7 +21,10 @@ import music.PlayerManager;
 import music.TrackScheduler;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -63,7 +67,7 @@ public class Main extends ListenerAdapter{
 			case "!ping":
 				event.getChannel().sendMessage("Pong!").queue();
 				break;
-			case "!echo":
+			case "!say":
 				event.getChannel().sendMessage(event.getMessage().getContentRaw().substring(cmd.length()+1)).queue();
 				break;
 			case "!join":
@@ -79,6 +83,19 @@ public class Main extends ListenerAdapter{
 				PlayerManager manager = PlayerManager.getInstance();
 				manager.loadAndPlay(event.getTextChannel(), event.getMessage().getContentRaw().substring(cmd.length()+1));
 				manager.getGuildMusicManager(event.getGuild()).player.setVolume(10);
+				break;
+			case "!kick":
+				String userId = event.getMessage().getContentRaw().substring(cmd.length()+1).trim();
+				List<Member> mentioned = event.getMessage().getMentionedMembers();
+				try {
+					for (Member m : mentioned
+						 ) {
+						g.kick(m).queue();
+						event.getChannel().sendMessage("Kicked " + m.getNickname()).queue();
+					}
+				}catch (NullPointerException e){
+					System.out.println("User was null");
+				}
 				break;
 		}
 	}
