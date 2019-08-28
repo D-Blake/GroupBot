@@ -161,11 +161,11 @@ public class Main extends ListenerAdapter{
 				        event.getChannel().sendMessage("You must mention who you want to be muted").queue();
 				        return;
 				    }
-				    net.dv8tion.jda.api.entities.Role role = cmd.matches("(!mute)") ? guild.getRolesByName("muted", true).get(0):null;
+//				    Role role = cmd.matches("(!mute)") ? guild.getRolesByName("muted", true).get(0):null;
 				    if(!Membes.isEmpty()) {
 					    String nam =Membes.get(0).getAsMention();
 
-				    	guild.addRoleToMember(Membes.get(0), role).queue();
+//				    	guild.addRoleToMember(Membes.get(0), role).queue();
 				    	event.getChannel().sendMessage("Muted " +nam).queue();
 
 				    }
@@ -181,10 +181,10 @@ public class Main extends ListenerAdapter{
 			        event.getChannel().sendMessage("You must mention who you want to be unmuted").queue();
 			        return;
 			    }
-			    net.dv8tion.jda.api.entities.Role rol = cmd.matches("(!unmute)") ? guild.getRolesByName("muted", true).get(0):null;
+//			    Role rol = cmd.matches("(!unmute)") ? guild.getRolesByName("muted", true).get(0):null;
 			    if(!Membe.isEmpty()) {
 				    String nm =Membe.get(0).getAsMention();
-			    	guild.removeRoleFromMember(Membe.get(0), rol).queue();
+//			    	guild.removeRoleFromMember(Membe.get(0), rol).queue();
 			    	event.getChannel().sendMessage("Unmuted " +nm).queue();
 
 			    }
@@ -201,10 +201,10 @@ public class Main extends ListenerAdapter{
 			        event.getChannel().sendMessage("You must mention who you want to be unmuted").queue();
 			        return;
 			    }
-			    net.dv8tion.jda.api.entities.Role ro = cmd.matches("(!addrole)") ? guild.getRolesByName("admin", true).get(0):null;
+//			    Role ro = cmd.matches("(!addrole)") ? guild.getRolesByName("admin", true).get(0):null;
 			    if(!Memb.isEmpty()) {
-			    	guild.addRoleToMember(Memb.get(0), ro).queue();
-			    	event.getChannel().sendMessage("Add role "+ro.getName() +" to " +n).queue();
+//			    	guild.addRoleToMember(Memb.get(0), ro).queue();
+//			    	event.getChannel().sendMessage("Add role "+ro.getName() +" to " +n).queue();
 
 			    }
 			    break;
@@ -219,11 +219,11 @@ public class Main extends ListenerAdapter{
 			        event.getChannel().sendMessage("You must mention who you want to be unmuted").queue();
 			        return;
 			    }
-			    net.dv8tion.jda.api.entities.Role r = cmd.matches("(!delrole)") ? guild.getRolesByName("admin", true).get(0):null;
+//			    Role r = cmd.matches("(!delrole)") ? guild.getRolesByName("admin", true).get(0):null;
 			    if(!Mem.isEmpty()) {
 			    	String na =Mem.get(0).getAsMention();
-			    	guild.removeRoleFromMember(Mem.get(0), r).queue();
-			    	event.getChannel().sendMessage("Removed role "+r.getName() +" from " +na).queue();
+//			    	guild.removeRoleFromMember(Mem.get(0), r).queue();
+//			    	event.getChannel().sendMessage("Removed role "+r.getName() +" from " +na).queue();
 
 			    }
 			    break;

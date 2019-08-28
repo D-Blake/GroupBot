@@ -40,7 +40,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     
     compile 'net.dv8tion:JDA:4.0.0_40'
-        compile 'com.jagrosh:jda-utilities:2.0'
-    
 }
 compileJava.options.encoding = 'UTF-8'

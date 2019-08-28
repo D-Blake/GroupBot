@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.security.auth.login.LoginException;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.*;
 
 import music.AudioPlayerSendHandler;
@@ -22,10 +25,12 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
+
 public class Main extends ListenerAdapter{
 	
 
@@ -161,7 +166,7 @@ public class Main extends ListenerAdapter{
 				        event.getChannel().sendMessage("You must mention who you want to be muted").queue();
 				        return;
 				    }
-				    net.dv8tion.jda.api.entities.Role role = cmd.matches("(!mute)") ? guild.getRolesByName("muted", true).get(0):null;
+				    Role role = cmd.matches("(!mute)") ? guild.getRolesByName("muted", true).get(0):null;
 				    if(!Membes.isEmpty()) {
 					    String nam =Membes.get(0).getAsMention();
 
@@ -181,7 +186,7 @@ public class Main extends ListenerAdapter{
 			        event.getChannel().sendMessage("You must mention who you want to be unmuted").queue();
 			        return;
 			    }
-			    net.dv8tion.jda.api.entities.Role rol = cmd.matches("(!unmute)") ? guild.getRolesByName("muted", true).get(0):null;
+			    Role rol = cmd.matches("(!unmute)") ? guild.getRolesByName("muted", true).get(0):null;
 			    if(!Membe.isEmpty()) {
 				    String nm =Membe.get(0).getAsMention();
 			    	guild.removeRoleFromMember(Membe.get(0), rol).queue();
@@ -201,7 +206,7 @@ public class Main extends ListenerAdapter{
 			        event.getChannel().sendMessage("You must mention who you want to be unmuted").queue();
 			        return;
 			    }
-			    net.dv8tion.jda.api.entities.Role ro = cmd.matches("(!addrole)") ? guild.getRolesByName("admin", true).get(0):null;
+			    Role ro = cmd.matches("(!addrole)") ? guild.getRolesByName("admin", true).get(0):null;
 			    if(!Memb.isEmpty()) {
 			    	guild.addRoleToMember(Memb.get(0), ro).queue();
 			    	event.getChannel().sendMessage("Add role "+ro.getName() +" to " +n).queue();
@@ -219,7 +224,7 @@ public class Main extends ListenerAdapter{
 			        event.getChannel().sendMessage("You must mention who you want to be unmuted").queue();
 			        return;
 			    }
-			    net.dv8tion.jda.api.entities.Role r = cmd.matches("(!delrole)") ? guild.getRolesByName("admin", true).get(0):null;
+			    Role r = cmd.matches("(!delrole)") ? guild.getRolesByName("admin", true).get(0):null;
 			    if(!Mem.isEmpty()) {
 			    	String na =Mem.get(0).getAsMention();
 			    	guild.removeRoleFromMember(Mem.get(0), r).queue();
