@@ -17,6 +17,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.*;
 
 import music.AudioPlayerSendHandler;
+import music.GuildMusicManager;
 import music.PlayerManager;
 import music.TrackScheduler;
 import net.dv8tion.jda.api.AccountType;
@@ -48,9 +49,11 @@ public class Main extends ListenerAdapter{
 		g = event.getGuild();
 		VoiceChannel myChannel = g.getVoiceChannelsByName("music", true).get(0);
 		AudioManager audioManager = g.getAudioManager();
-		AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
-		AudioPlayer player = playerManager.createPlayer();
+		AudioPlayerManager audioPM = new DefaultAudioPlayerManager();
+		AudioPlayer player = audioPM.createPlayer();
+		GuildMusicManager gmm = new GuildMusicManager(audioPM);
 		TrackScheduler trackScheduler = new TrackScheduler(player);
+		PlayerManager playerManager = PlayerManager.getInstance();
 		player.addListener(trackScheduler);
 		System.out.println("We received a message from " +
 					event.getAuthor().getName() + ": " +
@@ -80,9 +83,36 @@ public class Main extends ListenerAdapter{
 				audioManager.closeAudioConnection();
 				break;
 			case "!play":
-				PlayerManager manager = PlayerManager.getInstance();
-				manager.loadAndPlay(event.getTextChannel(), event.getMessage().getContentRaw().substring(cmd.length()+1));
-				manager.getGuildMusicManager(event.getGuild()).player.setVolume(10);
+				playerManager.loadAndPlay(event.getTextChannel(), event.getMessage().getContentRaw().substring(cmd.length()+1));
+				playerManager.getGuildMusicManager(event.getGuild()).player.setVolume(10);
+				break;
+			case "!pause":
+					gmm.scheduler.onPlayerPause(playerManager.getGuildMusicManager(event.getGuild()).player);
+				break;
+			case "!playlist":
+					String s = "Queue: ";
+					for(AudioTrack tr : playerManager.getGuildMusicManager(event.getGuild()).scheduler.getPlaylist()) {
+						s+=tr.getInfo().title;
+					}
+					s.toCharArray()[s.length()-1] = ' ';
+					event.getChannel().sendMessage(s.strip()).queue();
+				break;
+			case "!resume": 
+					gmm.scheduler.onPlayerResume(playerManager.getGuildMusicManager(event.getGuild()).player);
+				break;
+			case "!volume":
+				int vol = 0;
+				try {
+					vol = Integer.parseInt(event.getMessage().getContentRaw().substring(cmd.length()+1));					
+				}catch(NumberFormatException nf) {
+					System.out.println("Not a number");
+					break;
+				}
+				playerManager.getGuildMusicManager(event.getGuild()).player.setVolume(vol);
+				break;
+			case "!skip":
+					playerManager.getGuildMusicManager(event.getGuild()).scheduler.nextTrack();
+					System.out.println("Skipped Song");
 				break;
 			case "!kick":
 				String userId = event.getMessage().getContentRaw().substring(cmd.length()+1).trim();

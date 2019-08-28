@@ -51,6 +51,7 @@ public class PlayerManager {
 				// TODO Auto-generated method stub
 				channel.sendMessage("Adding to queue " + track.getInfo().title).queue();
 				play(musicManager, track);
+				
 			}
 			
 			@Override
@@ -76,11 +77,11 @@ public class PlayerManager {
 				channel.sendMessage("LOAD FAILED");
 			}
 		});
+		
 	}
 	
 	private void play(GuildMusicManager musicManager, AudioTrack track) {
 		musicManager.scheduler.queue(track);
-		
 	}
 	
 	public static synchronized PlayerManager getInstance() {

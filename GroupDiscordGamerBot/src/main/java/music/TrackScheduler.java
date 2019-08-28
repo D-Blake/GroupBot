@@ -21,6 +21,7 @@ public class TrackScheduler extends AudioEventAdapter {
   public TrackScheduler(AudioPlayer player) {
     this.player = player;
     this.queue = new LinkedBlockingQueue<>();
+    
   }
 
   /**
@@ -35,6 +36,26 @@ public class TrackScheduler extends AudioEventAdapter {
     if (!player.startTrack(track, true)) {
       queue.offer(track);
     }
+  }
+  
+  @Override
+  public void onPlayerPause(AudioPlayer player) {
+    // Player was paused
+		player.setPaused(true);
+  }
+  
+  @Override
+  public void onPlayerResume(AudioPlayer player) {
+    // Player was resumed
+	  player.setPaused(false);
+  }
+  
+  public void onPlayerStop(AudioPlayer player) {
+	  player.stopTrack();
+  }
+  
+  public BlockingQueue<AudioTrack> getPlaylist() {
+	  return queue;
   }
 
   /**
